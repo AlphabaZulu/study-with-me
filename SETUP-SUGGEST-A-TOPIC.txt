@@ -1,0 +1,47 @@
+STUDY-WITH-ME! — SWITCHING ON THE "SUGGEST A TOPIC" FORM
+=========================================================
+
+The form sends students' suggestions to your inbox through Formspree.
+It stays switched off until you add your Formspree endpoint.
+
+1. CREATE THE FORMSPREE FORM (about 5 minutes, free plan)
+   a. Go to https://formspree.io and sign up using wstudy585@gmail.com.
+      Choose the free plan. No card is needed.
+   b. Open the verification email from Formspree in that Gmail inbox and
+      click the link. Check the spam folder if you can't find it.
+   c. In Formspree, click "+ New Form". Name it "Suggest a Topic" and
+      choose wstudy585@gmail.com as the email address to send to.
+   d. Copy the form endpoint. It looks like:
+         https://formspree.io/f/abcdwxyz
+
+2. PASTE THE ENDPOINT INTO THE WEBSITE
+   Open  data/config.js  and put the endpoint between the quotes:
+         suggestFormEndpoint: 'https://formspree.io/f/abcdwxyz'
+   Save the file. Nothing else needs to change.
+   (The endpoint is a public form address, not a secret key.)
+
+3. PUBLISH ON GITHUB PAGES
+   a. Upload everything in this folder to your GitHub repository, keeping
+      the data folder as it is.
+   b. In the repository, go to Settings > Pages and set the Source to
+      "GitHub Actions" (see SETUP-NEWS-FEED.txt, steps 2 to 4).
+   c. Wait a minute or two, then open your GitHub Pages address.
+
+4. SEND A TEST SUGGESTION (please don't skip this)
+   a. On the live site, click "Suggest a Topic" and send a test.
+   b. The first submission may ask you to confirm the form in Formspree.
+      Follow the email or dashboard prompt if it does.
+   c. Check that wstudy585@gmail.com receives an email with the subject
+      "Study-With-Me! — New Student Request" (check the spam folder too).
+      If it lands in spam, mark it "Not spam".
+   Email delivery only counts as working once this test arrives.
+
+5. RECOMMENDED FORMSPREE SETTINGS
+   - Keep Formspree's spam filtering switched on.
+   - Free plan limit: 50 submissions a month. Extra submissions are held
+     back until the next month or until you upgrade. Don't upgrade
+     without deciding you want to pay.
+
+Note: "Study together" rooms only work while the site is hosted on
+claude.ai. On GitHub Pages that section will show as unavailable.
+Everything else works as a normal website.

@@ -1,0 +1,36 @@
+# Study-With-Me! — daily data check (NOT YET TESTED ON GITHUB)
+# Runs every morning and whenever data files change.
+# - Fails the run if data/economy.js has a mistake (missing source, bad date...).
+# - Opens (or updates) one GitHub issue listing figures that are due for a
+#   manual update, e.g. after an MPC decision or a new Stats SA release.
+# Uses only GitHub's built-in token. No API keys, no paid services,
+# and it never changes the website by itself.
+name: Data check
+on:
+  schedule:
+    - cron: '17 4 * * *'   # 06:17 South African time, daily
+  push:
+    paths: ['data/economy.js', 'data/pulse.js', 'tools/check-freshness.mjs']
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - id: check
+        run: node tools/check-freshness.mjs
+      - name: Open or update the "data due for update" issue
+        if: steps.check.outputs.due == 'true' && github.event_name != 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Data due for update"
+          NUM=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number')
+          if [ -n "$NUM" ]; then gh issue comment "$NUM" --body-file freshness-report.md
+          else gh issue create --title "$TITLE" --body-file freshness-report.md; fi

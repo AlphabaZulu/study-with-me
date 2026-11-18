@@ -1,0 +1,38 @@
+STUDY-WITH-ME! — KEEPING "THE ECONOMY EXPLAINED" UP TO DATE
+==========================================================
+
+HOW IT WORKS NOW
+The news section reads one file: data/economy.js. The Rate Watch and the
+article indicator boxes read their figures from data/pulse.js (the same
+file as the Economic Pulse ticker), so the two never disagree.
+There is NO live news feed. The section is labelled "In Development".
+
+ADDING OR UPDATING AN ARTICLE (by hand)
+1. Find the official release (SARB, Stats SA, National Treasury) or a
+   reputable news report.
+2. In data/economy.js, copy an article block and change every field.
+   - headline: the publisher's headline, word for word
+   - summary and explanations: in your own words (never paste paragraphs)
+   - facts: confirmed figures, each with its source
+   - forecasts: what named experts expect (not facts)
+3. If a figure changed, update data/pulse.js too.
+4. After each MPC decision, update "rateWatch" in data/economy.js and the
+   repo and prime figures in data/pulse.js.
+
+THE DAILY DATA CHECK (GitHub Actions — not yet tested on GitHub)
+Included: .github/workflows/data-check.yml and tools/check-freshness.mjs
+- Every morning it checks data/economy.js for mistakes (missing sources,
+  impossible dates, unknown categories).
+- It opens one GitHub issue, "Data due for update", when a Pulse figure
+  passes its review date or an MPC decision date has passed.
+- It never changes the website itself and needs no API keys.
+To switch it on: upload the whole folder (including the hidden .github
+folder) to your repository. In the repository's Actions tab, open
+"Data check" and press "Run workflow" once. Check that it runs green.
+You can also run it on your own computer:  node tools/check-freshness.mjs
+
+WHY NOT A FULLY AUTOMATIC NEWS FEED?
+News APIs that allow republishing headlines usually need a paid plan and
+a secret key (which must live on a server, never in the website). Even
+then, every explainer still needs to be written and checked by a person.
+The daily check tells you WHEN to update; you decide WHAT to publish.

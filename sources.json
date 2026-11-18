@@ -1,0 +1,59 @@
+{
+  "_readme": "Sources the news workflow may read. Only add a source if its owner offers an RSS/Atom feed or API for this use, and its terms allow showing headlines with links. We store ONLY headline, link, publication time and the feed's own category labels: never article text or images. 'enabled:false' sources are ignored.",
+  "maxAgeDays": 45,
+  "maxItems": 120,
+  "sources": [
+    {
+      "id": "sarb",
+      "name": "South African Reserve Bank",
+      "url": "https://www.resbank.co.za/bin/sarb/solr/publications/rss",
+      "home": "https://www.resbank.co.za",
+      "allowedHosts": ["www.resbank.co.za", "resbank.co.za"],
+      "enabled": true,
+      "verified": "2026-11-18: official RSS feed offered on the SARB's RSS Feeds page; items checked by hand.",
+      "terms": "Official public RSS feed. We show headline, date and a link only.",
+      "defaultCategory": "rates",
+      "exclude": ["daily monetary operations", "share price", "auction", "act notice", "licensing condition", "variation of licen", "insurance", "co-operative bank", "tender", "vacanc", "forms"],
+      "include": []
+    },
+    {
+      "id": "statssa",
+      "name": "Statistics South Africa",
+      "url": "https://www.statssa.gov.za/?feed=rss2",
+      "home": "https://www.statssa.gov.za",
+      "allowedHosts": ["www.statssa.gov.za", "statssa.gov.za"],
+      "enabled": true,
+      "verified": "UNCONFIRMED: a third-party feed reader reports this feed works, but our own check on 2026-11-18 returned a web page. The first workflow run will confirm it; if it fails, the site shows this source as unavailable.",
+      "terms": "Official public RSS feed. We show headline, date and a link only.",
+      "defaultCategory": "sa",
+      "exclude": ["vacanc", "tender", "bursar", "internship", "census of commercial agriculture fieldwork"],
+      "include": []
+    },
+    {
+      "id": "imf",
+      "name": "International Monetary Fund",
+      "url": "https://www.imf.org/en/Publications/RSS",
+      "home": "https://www.imf.org",
+      "allowedHosts": ["www.imf.org", "imf.org"],
+      "enabled": true,
+      "verified": "UNCONFIRMED: listed by the IMF and by third-party readers; not yet fetched by the workflow.",
+      "terms": "Official public RSS feed. We show headline, date and a link only.",
+      "defaultCategory": "global",
+      "exclude": [],
+      "include": ["south africa", "sub-saharan", "africa", "emerging market", "world economic outlook", "global financial stability", "fiscal monitor", "commodit", "oil price", "global economy", "global growth", "brics"]
+    },
+    {
+      "id": "example-business-publisher",
+      "name": "(Template) South African business news publisher",
+      "url": "https://example.com/feed/",
+      "home": "https://example.com",
+      "allowedHosts": ["example.com"],
+      "enabled": false,
+      "verified": "TEMPLATE ONLY. Before enabling a commercial publisher, get written permission or confirm that its terms allow displaying headlines and links on another website.",
+      "terms": "",
+      "defaultCategory": "business",
+      "exclude": [],
+      "include": []
+    }
+  ]
+}

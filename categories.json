@@ -1,0 +1,23 @@
+{
+  "_readme": "Keyword rules used to place each headline in categories. Matching is case-insensitive on the headline and the feed's own category labels. An item can have several categories. Topics are the learning links shown on each card.",
+  "rules": [
+    {"id": "rates", "words": ["repo rate", "interest rate", "monetary policy", "mpc", "policy rate", "prime lending", "prime rate"]},
+    {"id": "inflation", "words": ["inflation", "consumer price", "cpi", "producer price", "ppi", "fuel price", "petrol", "diesel", "food price", "cost of living"]},
+    {"id": "unemployment", "words": ["unemployment", "labour force", "employment", "jobs", "qlfs", "labour market", "earnings"]},
+    {"id": "fx", "words": ["exchange rate", "rand", "currency", "foreign exchange", "forex", "current account", "balance of payments", "trade balance", "export*", "import*", "reserves"]},
+    {"id": "business", "words": ["retail", "manufacturing", "mining", "wholesale", "motor trade", "business", "industry", "electricity generated", "building plans", "tourism", "companies", "banks", "banking"]},
+    {"id": "global", "words": ["global", "world economic outlook", "imf", "world bank", "oil", "commodit*", "international"]},
+    {"id": "policy", "words": ["budget", "treasury", "fiscal", "tax", "government debt", "policy statement", "regulation", "reform", "financial stability", "prudential"]},
+    {"id": "sa", "words": ["south africa", "gdp", "gross domestic product", "economy", "economic"]}
+  ],
+  "topics": {
+    "rates": [{"label": "Macroeconomics: monetary policy", "href": "#economics-macro"}, {"label": "Business Management: cost of finance", "href": "#business-management"}],
+    "inflation": [{"label": "Microeconomics: prices and markets", "href": "#economics-micro"}, {"label": "Business Management: pricing and costs", "href": "#business-management"}],
+    "unemployment": [{"label": "Microeconomics: labour markets", "href": "#economics-micro"}, {"label": "Business Management: human resources", "href": "#business-management"}],
+    "fx": [{"label": "Macroeconomics: international trade", "href": "#economics-macro"}, {"label": "Business Management: imports, exports and risk", "href": "#business-management"}],
+    "business": [{"label": "Business Management", "href": "#business-management"}, {"label": "Microeconomics: markets and firms", "href": "#economics-micro"}],
+    "global": [{"label": "Macroeconomics: the global economy", "href": "#economics-macro"}],
+    "policy": [{"label": "Macroeconomics: fiscal policy", "href": "#economics-macro"}, {"label": "Business Management: the business environment", "href": "#business-management"}],
+    "sa": [{"label": "Economics", "href": "#economics"}, {"label": "Macroeconomics: economic growth", "href": "#economics-macro"}]
+  }
+}

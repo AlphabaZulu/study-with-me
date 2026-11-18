@@ -1,0 +1,64 @@
+STUDY-WITH-ME! — SWITCHING ON THE AUTOMATIC NEWS FEED
+=====================================================
+
+STATUS: Built and tested with sample feeds. NOT yet run on GitHub.
+The website says "Automatic feed not running yet" until the workflow has
+retrieved real articles. Please don't describe the feed as live until
+step 5 below has worked.
+
+WHAT'S INCLUDED
+  .github/workflows/news-feed.yml  every 30 minutes: fetch, check, commit, publish
+  .github/workflows/pages.yml      publishes the website (website files only)
+  tools/news/fetch-news.mjs        the fetcher (no add-ons, no API keys)
+  tools/news/sources.json          which feeds it may read
+  tools/news/categories.json       keyword rules for categories and topics
+  data/news.js                     what the website reads (starts empty)
+
+SOURCES
+  - South African Reserve Bank: official RSS feed. Checked by hand on
+    18 Nov 2026.
+  - Statistics South Africa: official RSS feed. Couldn't be confirmed
+    from here; the first run will show if it works.
+  - IMF publications: official RSS feed, filtered to items linked to
+    South Africa, Africa or the global economy. Unconfirmed until the
+    first run.
+  - National Treasury: no public RSS feed found, so not included.
+  - Commercial news sites: none switched on. Only add one after getting
+    permission or confirming its terms allow showing headlines with links.
+    There is a template entry in sources.json.
+
+STEP-BY-STEP
+1. Upload everything in this folder to your GitHub repository (main
+   branch), including the hidden .github folder.
+2. Settings > Pages > Build and deployment > Source: choose
+   "GitHub Actions". (This matters: GitHub doesn't rebuild Pages for
+   commits made by workflows, so the news workflow publishes the site
+   itself.)
+3. Settings > Actions > General > Workflow permissions: choose
+   "Read and write permissions" and save.
+4. Actions tab > "Publish website" > Run workflow. Wait for the green
+   tick, then open your site address.
+5. Actions tab > "News feed" > Run workflow. When it finishes:
+   - open the run and read the log: each source shows "ok" or an error
+   - check that a commit called "News feed update ..." appeared
+   - check that "Publish website" ran after it
+   - reload The Economy Explained: the status should read
+     "Updating automatically", with real headlines, publishers and times
+   - open a few headline links and make sure they go to the right pages
+6. Leave it for an hour, then check that the "last successful refresh"
+   time has moved on by itself. Only then is the feed truly automatic.
+
+GOOD TO KNOW
+- GitHub may run scheduled workflows late when it's busy, so a gap of
+  more than 30 minutes now and then is normal.
+- It only commits when there's something new (or every 3 hours, to show
+  it's still working), so your history doesn't fill up.
+- If a source fails, the site keeps showing that source's last articles,
+  and the status warns that the feed may be out of date after 2 hours.
+- The workflow can only change data/news.js and tools/news/state.json.
+  If anything else changes, it stops without committing.
+- GitHub may pause scheduled workflows in a repository with no activity
+  for 60 days. If the feed stops, re-enable it in the Actions tab.
+- Automatic summaries and explanations (Stage 4) would need an AI
+  service with a secret key stored in GitHub Secrets. That may cost
+  money, so it's not built. Ask when you're ready.

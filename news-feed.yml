@@ -1,0 +1,62 @@
+# Study-With-Me! — automatic economic news feed
+# NOT YET RUN ON GITHUB. Do not describe the feed as live until this
+# workflow has run successfully and the website shows real articles.
+#
+# Every 30 minutes (GitHub may delay scheduled runs at busy times) it:
+#   1. reads the authorised feeds listed in tools/news/sources.json
+#   2. validates, de-duplicates and categorises the headlines
+#   3. commits ONLY data/news.js and tools/news/state.json, and only when
+#      something changed (or at least every 3 hours to show it's alive)
+#   4. republishes the website (GitHub does not rebuild Pages for commits
+#      made with the built-in token, so this workflow publishes it itself)
+# It uses GitHub's built-in token. No API keys or paid services.
+name: News feed
+on:
+  schedule:
+    - cron: '11,41 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: news-feed
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      changed: ${{ steps.fetch.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - id: fetch
+        run: node tools/news/fetch-news.mjs
+      - name: Safety check (only the two feed files may change)
+        run: |
+          CHANGED=$(git status --porcelain | awk '{print $2}' | sort)
+          echo "Changed files:"; echo "$CHANGED"
+          for f in $CHANGED; do
+            case "$f" in
+              data/news.js|tools/news/state.json) ;;
+              *) echo "::error::Unexpected change to $f. Stopping without committing."; exit 1 ;;
+            esac
+          done
+          node -e "global.window={};require('./data/news.js');const n=window.SWM_NEWS;if(!n||!Array.isArray(n.items))process.exit(1);console.log('news.js OK:',n.items.length,'articles, mode',n.mode)"
+      - name: Commit the updated feed
+        if: steps.fetch.outputs.changed == 'true'
+        run: |
+          git config user.name "study-with-me-news-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/news.js tools/news/state.json
+          git diff --cached --quiet && { echo "Nothing to commit"; exit 0; }
+          git commit -m "News feed update $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase --autostash
+          git push
+  publish:
+    needs: update
+    if: needs.update.outputs.changed == 'true'
+    uses: ./.github/workflows/pages.yml
