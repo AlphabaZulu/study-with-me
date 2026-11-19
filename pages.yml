@@ -1,6 +1,7 @@
 # Study-With-Me! — publish the website to GitHub Pages (NOT YET RUN ON GITHUB)
 # Requires: Settings > Pages > Build and deployment > Source = "GitHub Actions".
-# Publishes ONLY index.html, .nojekyll and the data folder. Tools, workflows
+# Publishes ONLY index.html, .nojekyll, the data folder and the SEO files
+# (sitemap.xml, robots.txt, og-image.png and any Google verification file). Tools, workflows
 # and notes in the repository are never put on the public website.
 name: Publish website
 on:
@@ -30,6 +31,9 @@ jobs:
           mkdir _site
           cp index.html _site/
           cp -r data _site/
+          for f in sitemap.xml robots.txt og-image.png google*.html; do
+            [ -f "$f" ] && cp "$f" _site/ || true
+          done
           touch _site/.nojekyll
           test -f _site/index.html && test -f _site/data/news.js
       - uses: actions/configure-pages@v5
